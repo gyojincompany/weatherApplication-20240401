@@ -158,6 +158,14 @@ class WeatherApp(QMainWindow, form_class):
         self.weather_search()  # 날씨 조회 함수 호출
         threading.Timer(60, self.reflashTimer).start()
 
+    def closeEvent(self, QCloseEvent):  # 프로그램 종료 이벤트 시 호출되는 함수
+        result = QMessageBox.question(self, "종료 확인", "프로그램을 종료하시겠습니까?", QMessageBox.Yes | QMessageBox.No)
+        if result == QMessageBox.Yes:  # 프로그램 종료 확인
+            self.timer.cancel()  # 쓰레드 종료됨
+            QCloseEvent.accept()
+        else:
+            QCloseEvent.ignore()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
